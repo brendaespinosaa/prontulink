@@ -1,90 +1,54 @@
-# ProntuLink – Otimização do Acesso a Dados de Saúde
+# ProntuLink – Gerenciamento de Pacientes e Anamnese Odontológica
 
 ## Sobre o projeto
 
-O **ProntuLink** é um projeto acadêmico desenvolvido com o objetivo de propor melhorias na organização, padronização e acessibilidade de informações clínicas, buscando facilitar o acesso aos dados dos pacientes por profissionais de saúde autorizados.
+O **ProntuLink** é um protótipo de sistema desenvolvido com o objetivo de facilitar o gerenciamento de pacientes e o preenchimento de fichas de anamnese odontológica.
 
-A iniciativa surgiu a partir da identificação da importância de disponibilizar informações clínicas de maneira organizada, clara e eficiente, contribuindo para a otimização dos processos de consulta e compartilhamento de dados no ambiente de saúde.
+A solução busca centralizar informações cadastrais e clínicas em uma interface organizada e intuitiva, permitindo o registro, a consulta e a atualização dos dados dos pacientes.
 
-O projeto está relacionado à parceria com a **Unir Clínicas**, localizada em Porto Alegre – RS.
+O projeto foi desenvolvido no contexto acadêmico, considerando a necessidade de otimizar processos relacionados à organização e ao acesso às informações durante o atendimento odontológico.
 
 ## Objetivo geral
 
-Desenvolver uma proposta de solução que facilite a organização e o acesso às informações clínicas dos pacientes, contribuindo para a melhoria dos processos de consulta e compartilhamento de dados entre profissionais de saúde.
+Desenvolver um protótipo que facilite o gerenciamento de pacientes e a organização de informações clínicas por meio de fichas de anamnese odontológica digitais.
 
 ## Objetivos específicos
 
-- Organizar informações clínicas essenciais dos pacientes.
-- Facilitar a localização e consulta de informações relevantes.
-- Padronizar a apresentação dos dados clínicos.
-- Simular o acesso às informações por profissionais de saúde.
-- Propor melhorias na organização e acessibilidade dos registros.
-- Considerar aspectos de segurança e confidencialidade das informações.
+- Facilitar o cadastro e o gerenciamento de pacientes.
+- Organizar informações pessoais e de contato.
+- Disponibilizar fichas digitais de anamnese odontológica.
+- Estruturar questionários para registro do histórico médico e odontológico.
+- Permitir a edição e exportação das fichas em PDF.
+- Disponibilizar recursos para exportação e importação de backups.
+- Melhorar a organização e a acessibilidade das informações registradas.
 
-## Funcionalidades propostas
+## Funcionalidades
 
-O protótipo tem como foco demonstrar uma proposta de organização e consulta de informações clínicas, contemplando:
+### Painel inicial
+- Visualização da quantidade de pacientes cadastrados.
+- Visualização da quantidade de fichas de anamnese.
+- Exibição dos pacientes cadastrados recentemente.
 
-- Apresentação organizada das informações dos pacientes.
-- Visualização de dados clínicos.
-- Organização de informações relevantes para consulta.
-- Navegação entre os elementos disponíveis.
-- Simulação de utilização em um contexto de atendimento de saúde.
+### Gerenciamento de pacientes
+- Cadastro de novos pacientes.
+- Registro de informações pessoais e de contato.
+- Pesquisa por nome ou CPF.
+- Edição e exclusão de cadastros.
 
-## Tecnologias utilizadas
+### Fichas de anamnese
+- Criação de fichas de anamnese odontológica.
+- Questionário composto por 49 perguntas.
+- Organização das perguntas em etapas.
+- Preenchimento e edição das respostas.
+- Salvamento automático das informações.
+- Conclusão das fichas.
 
-- **HTML5:** estruturação do conteúdo e dos elementos da interface.
-- **CSS3:** estilização e organização visual.
-- **JavaScript:** implementação de interações e comportamentos da interface.
+### Exportação e armazenamento
+- Exportação de fichas em PDF.
+- Exportação de backups em formato JSON.
+- Importação de backups.
+- Armazenamento local utilizando IndexedDB.
 
-## Estrutura da documentação
-
-A documentação do projeto está organizada em arquivos Markdown, contemplando as principais etapas de definição, planejamento e validação da solução.
-
-| Arquivo | Descrição |
-|---|---|
-| `01-descricao-do-projeto.md` | Apresentação, contextualização e objetivos do ProntuLink. |
-| `02-requisitos-do-sistema.md` | Definição dos requisitos funcionais e não funcionais. |
-| `03-funcionalidades.md` | Descrição das funcionalidades e recursos propostos para o protótipo. |
-| `04-testes-e-validacao.md` | Metodologia, cenários de teste e validação do protótipo. |
-
-## Como executar o protótipo
-
-1. Acesse o repositório do projeto no GitHub.
-2. Localize o arquivo HTML do protótipo.
-3. Faça o download do arquivo ou clone o repositório.
-4. Abra o arquivo HTML em um navegador de internet.
-5. Explore as telas e funcionalidades disponíveis.
-
-Não é necessária a instalação de ferramentas adicionais para a visualização local do protótipo.
-
-## Testes e validação
-
-A validação considera aspectos relacionados à navegação, apresentação das informações, organização dos dados e funcionamento dos recursos disponíveis.
-
-Os testes devem utilizar exclusivamente dados fictícios, evitando qualquer exposição de informações reais de pacientes.
-
-Os cenários e critérios de avaliação estão descritos no arquivo `04-testes-e-validacao.md`.
-
-## Segurança e privacidade
-
-O ProntuLink possui finalidade exclusivamente acadêmica e demonstrativa.
-
-O projeto não deve ser utilizado para armazenar, processar ou consultar informações reais de pacientes. A implementação em ambiente de produção exigiria mecanismos adicionais de autenticação, controle de acesso, proteção de dados e conformidade com a Lei Geral de Proteção de Dados (LGPD).
-
-## Limitações do projeto
-
-O ProntuLink é um protótipo acadêmico e não substitui sistemas oficiais de prontuário eletrônico.
-
-Integrações com plataformas externas de saúde, mecanismos completos de segurança e funcionalidades avançadas dependem de desenvolvimento adicional.
-
-## Contexto acadêmico
-
-Projeto desenvolvido no contexto acadêmico, com foco na aplicação de conhecimentos de tecnologia da informação para propor melhorias em processos relacionados à organização e ao acesso a informações na área da saúde.
-
-**Instituição parceira:** Unir Clínicas  
-**Localização:** Porto Alegre – RS, Brasil.
-
----
-
-*ProntuLink – Conectando informações, facilitando o acesso e contribuindo para a organização dos dados de saúde.*
+### Área profissional
+- Campo para anotações internas do profissional.
+- Opção de incluir ou não as anotações na exportação em PDF.
