@@ -39,14 +39,14 @@ O protótipo tem como foco demonstrar uma proposta de organização e consulta d
 
 ## Estrutura da documentação
 
-O projeto possui documentação organizada para apresentar suas etapas de desenvolvimento, requisitos e critérios de validação.
+A documentação do projeto está organizada em arquivos Markdown, contemplando as principais etapas de definição, planejamento e validação da solução.
 
 | Arquivo | Descrição |
 |---|---|
-| `01-contextualizacao.md` | Apresentação e contextualização do projeto. |
-| `02-requisitos.md` | Definição dos requisitos funcionais e não funcionais. |
-| `03-arquitetura-e-modelagem.md` | Descrição da estrutura e modelagem da solução. |
-| `04-testes-e-validacao.md` | Metodologia e cenários de testes do protótipo. |
+| `01-descricao-do-projeto.md` | Apresentação, contextualização e objetivos do ProntuLink. |
+| `02-requisitos-do-sistema.md` | Definição dos requisitos funcionais e não funcionais. |
+| `03-funcionalidades.md` | Descrição das funcionalidades e recursos propostos para o protótipo. |
+| `04-testes-e-validacao.md` | Metodologia, cenários de teste e validação do protótipo. |
 
 ## Como executar o protótipo
 
