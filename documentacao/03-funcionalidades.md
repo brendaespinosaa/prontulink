@@ -1,21 +1,38 @@
-# Funcionalidades – ProntuLink
+# Funcionalidades do ProntuLink
 
-Este documento apresenta as funcionalidades disponibilizadas no protótipo ProntuLink.
+O ProntuLink é um protótipo de sistema para gerenciamento de pacientes e preenchimento de fichas de anamnese odontológica.
 
-## Organização das informações
+## 1. Painel inicial
+- Visualização da quantidade de pacientes cadastrados.
+- Visualização da quantidade de fichas de anamnese.
+- Exibição dos pacientes cadastrados recentemente.
 
-A plataforma propõe reunir informações essenciais dos pacientes em um ambiente digital organizado.
+## 2. Gerenciamento de pacientes
+- Cadastro de novos pacientes.
+- Registro de informações pessoais e de contato.
+- Consulta e pesquisa de pacientes por nome ou CPF.
+- Edição e exclusão de cadastros.
 
-## Consulta de informações
+## 3. Fichas de anamnese
+- Criação de fichas odontológicas.
+- Questionário com 49 perguntas sobre histórico médico, medicamentos, sintomas e condições bucais.
+- Organização das perguntas em etapas.
+- Preenchimento e edição das respostas.
+- Salvamento automático das informações.
+- Conclusão da ficha.
 
-Permite demonstrar como profissionais de saúde podem consultar informações clínicas relevantes.
+## 4. Exportação e armazenamento
+- Exportação da ficha de anamnese em PDF.
+- Exportação de backup dos registros em JSON.
+- Importação de backups anteriormente exportados.
+- Armazenamento local das informações no navegador.
 
-## Interface
+## 5. Área profissional
+- Campo reservado para anotações internas do profissional.
+- Possibilidade de incluir ou não essas anotações na exportação em PDF.
 
-O protótipo apresenta uma interface digital desenvolvida para facilitar a navegação e a visualização das informações.
+## Observações técnicas
 
-## Compartilhamento de informações
+O protótipo foi desenvolvido utilizando HTML, CSS e JavaScript, com armazenamento local por meio do IndexedDB do navegador.
 
-A proposta busca facilitar o acesso às informações entre profissionais autorizados, respeitando a privacidade dos dados.
-
-**Nota:** as funcionalidades descritas devem corresponder ao que está efetivamente implementado no protótipo.
+O sistema possui finalidade acadêmica e demonstrativa. Não deve ser utilizado para armazenar informações reais de pacientes ou substituir um sistema clínico em produção.
