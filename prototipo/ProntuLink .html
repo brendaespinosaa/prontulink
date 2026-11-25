@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ProntuLink — Anamnese Odontológica</title>
+<style>
+:root{--bg:#eef2f4;--card:#fff;--ink:#16252d;--mut:#66767f;--line:#d6dee3;--pri:#0e5c63;--pri2:#0a464c;--soft:#e3f0f1;--dan:#a8321f;--amb:#c98a1b}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+h1,h2,h3{font-family:Georgia,"Iowan Old Style",serif;font-weight:600;margin:0}
+h1{font-size:26px}h2{font-size:19px;margin-bottom:12px}
+.app{display:flex;min-height:100vh}
+aside{width:230px;flex:none;background:#10272c;color:#c9dde0;padding:22px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.logo{font:700 23px Georgia,serif;color:#fff;padding:0 10px 4px}.logo i{color:#6fd3c9;font-style:normal}
+.sub{font-size:12px;color:#8fb0b5;padding:0 10px 18px}
+aside button{background:none;border:0;color:inherit;text-align:left;padding:9px 10px;border-radius:6px;font:inherit;cursor:pointer}
+aside button:hover,aside button.on{background:#1b3b41;color:#fff}
+.sp{flex:1}
+main{flex:1;padding:28px 32px 60px;max-width:1040px;min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;margin:16px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;padding:8px 14px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;color:var(--ink)}
+button:hover{border-color:var(--pri)}button:disabled{opacity:.4;cursor:default}
+button.pri{background:var(--pri);border-color:var(--pri);color:#fff}button.pri:hover{background:var(--pri2)}
+button.dan{color:var(--dan)}button.dan:hover{border-color:var(--dan)}
+:focus-visible{outline:2px solid var(--amb);outline-offset:2px}
+.mut{color:var(--mut);font-size:13px}
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 22px;min-width:190px}
+.stat b{display:block;font:600 34px Georgia,serif;color:var(--pri)}
+.item{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 4px;border-bottom:1px solid var(--line)}
+.item:last-child{border:0}.click{cursor:pointer}.click:hover{background:var(--soft)}
+.tag{font-size:12px;padding:1px 8px;border-radius:10px;background:#f5e6c8;color:#7a5200}.tag.ok{background:#d5ecd9;color:#1d5a2c}
+.search,input,select,textarea{font:inherit;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+.search{margin:12px 0;padding:11px 14px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--pri);border-color:var(--pri)}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.fl{display:block;font-size:13px;color:var(--mut)}.fl input,.fl select,.fl textarea{margin-top:3px;color:var(--ink);font-size:15px}
+.w2{grid-column:span 2}@media(max-width:600px){.w2{grid-column:auto}aside{display:none}main{padding:16px}}
+.prog{height:8px;background:#d9e2e6;border-radius:4px;overflow:hidden;margin:12px 0 4px}.prog div{height:100%;width:0;background:var(--pri);transition:width .3s}
+.stepper{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.stepper button{font-size:13px;padding:6px 10px}.stepper button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.q{padding:14px 0;border-bottom:1px solid var(--line)}.q:last-child{border:0}.qt{margin-bottom:8px}.qt b{color:var(--pri)}
+.yn{display:flex;gap:8px}.yn label{position:relative;padding:6px 22px;border:1px solid var(--line);border-radius:20px;cursor:pointer;background:#fff}
+.yn input{position:absolute;opacity:0;width:0}.yn label:has(input:checked){background:var(--pri);color:#fff;border-color:var(--pri)}.yn label:has(:focus-visible){outline:2px solid var(--amb)}
+.q input[type=date],.q input[type=number]{max-width:220px}
+.fu{margin-top:10px;padding:10px 12px;background:var(--soft);border-left:3px solid var(--pri);border-radius:0 6px 6px 0;display:grid;gap:8px}.fu[hidden],.step[hidden]{display:none}
+.note{background:#fbf3df;border-left:3px solid var(--amb);padding:10px 12px;margin-bottom:12px;font-size:14px}
+.decl{font-style:italic;margin:18px 0}.sig{font:italic 20px Georgia,serif!important}
+.nav{margin-top:8px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#10272c;color:#fff;padding:10px 18px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .25s}#toast.on{opacity:1}
+#print{display:none}
+@media print{.app,#toast{display:none!important}body{background:#fff}#print{display:block;font:11pt/1.35 Georgia,serif;color:#000}
+@page{margin:14mm}#print h1{font-size:20pt;text-align:center}#print h2{font-size:13pt;text-align:center;margin:0 0 10px;font-weight:400}
+#print h3{font-size:11pt;background:#e8eef0;padding:3px 8px;margin:14px 0 6px;-webkit-print-color-adjust:exact;print-color-adjust:exact;break-after:avoid}
+.pid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 14px}.pid div{border-bottom:1px solid #999;min-height:34px;font-size:10.5pt}.pid small{display:block;font-size:8pt;color:#555}.pid .w{grid-column:span 2}
+.pq{display:flex;gap:12px;padding:3px 0;border-bottom:1px dotted #aaa;break-inside:avoid}.pq span:first-child{flex:0 0 58%}.pq span:last-child{flex:1}
+.pb{border:1px solid #999;padding:6px 8px;min-height:50px;white-space:pre-wrap;break-inside:avoid}.sg{display:flex;gap:30px;margin-top:22px}.sg div{flex:1;border-top:1px solid #000;padding-top:2px;font-size:9pt}.sg em{font-size:13pt;display:block;min-height:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="logo">Prontu<i>Link</i></div><div class="sub">Anamnese odontológica</div>
+  <button id="n-dash" onclick="go('dash')">Painel</button>
+  <button id="n-list" onclick="go('list')">Pacientes</button>
+  <button onclick="go('pac')">+ Novo paciente</button>
+  <div class="sp"></div>
+  <button onclick="exp()">Exportar backup (JSON)</button>
+  <button onclick="$('#imp').click()">Importar backup</button>
+  <input type="file" id="imp" accept=".json,application/json" hidden>
+</aside>
+<main id="view"></main>
+</div>
+<div id="print"></div>
+<div id="toast"></div>
+
+<script>
+/* ============ DADOS ============ */
+const y=(n,t,...f)=>[n,t,'yn',f];
+const Q=[
+[1,'Em que data fez a última consulta ao seu médico?','date'],
+y(2,'No momento, está em tratamento médico?','Qual?'),
+y(3,'Está tomando algum medicamento?','Qual ou quais?'),
+y(4,'Alguma vez tomou antibiótico?'),
+y(5,'Teve alguma reação?','A qual?'),
+y(6,'Teve alguma reação a outro medicamento?','Qual ou quais?'),
+y(7,'Costuma ter urticária?'),y(8,'Tem eczema?'),y(9,'Sofre de asma?'),
+y(10,'Já foi prevenido(a) por algum médico como sendo portador(a) de distúrbio cardíaco?'),
+y(11,'Tem algum conhecimento de sua pressão arterial?','Qual?'),
+y(12,'Tem zumbido nos ouvidos?'),y(13,'Tem formigamento nas extremidades?'),y(14,'E extremidades inchadas?'),
+y(15,'Já tomou anestesia local para tratar ou extrair dentes?'),
+y(16,'Em caso afirmativo, sentiu alguma reação?','Qual?'),
+y(17,'Quando se fere a cicatrização é rápida?'),y(18,'Sangra muito quando extrai dentes ou se fere?'),
+y(19,'Respira bem pelo nariz?'),
+y(20,'Está grávida?','Em que mês está?'),
+y(21,'Já teve hepatite?','Há quanto tempo?'),
+y(22,'Sua digestão é boa?'),y(23,'Costuma tomar medicamentos para a digestão?'),
+y(24,'É difícil abrir a boca com a extensão que gostaria?'),
+y(25,'Sua mandíbula estala quando você mastiga?'),
+y(26,'Sente dor na articulação têmporo-mandibular (perto do ouvido)?'),
+y(27,'Sente dor nos músculos mastigadores?'),
+y(28,'Sente dor em alguma parte da boca?','Onde?'),
+y(29,'Sente dor em algum dente quando morde ou mastiga?'),
+y(30,'Sente dor em algum dente devido ao frio, calor ou doces?'),
+y(31,'Os alimentos ficam retidos entre os dentes?'),
+y(32,'Tem gânglios doloridos no pescoço, na região submandibular?'),
+y(33,'Tem gânglios doloridos em outra parte do corpo?'),
+y(34,'Considera-se uma pessoa nervosa?'),
+y(35,'Você teve desmaios ou convulsões (ataques)?','Quando?','Sabe por quê?'),
+y(36,'Costuma ter enjoo?'),y(37,'Fica ansioso(a) antes da consulta dentária?'),y(38,'Já teve instruções de higiene bucal?'),
+[39,'Quantas vezes escova os dentes por dia?','num'],
+y(40,'Utiliza-se de outros métodos para a sua higiene bucal além da escovação?','Qual ou quais?'),
+y(41,'Sente sua gengiva irritada ou dolorida?'),y(42,'Sua gengiva sangra com facilidade?'),
+y(43,'Existe alguma restrição médica quanto ao tratamento dentário?','Qual?'),
+y(44,'Já fez tratamento psiquiátrico?'),y(45,'Toma habitualmente bebidas alcoólicas?'),
+y(46,'Toma barbitúricos para dormir?'),y(47,'Tem contato com pessoas incluídas nos grupos de risco da AIDS?'),
+[48,'Em sua ausência, quem seria melhor indicado para uma comunicação?','ct',['Nome da pessoa','Contato (telefone)']],
+[49,'Há alguma outra informação sobre sua saúde que deve ser conhecida?','text']
+];
+const SEC=[{t:'Histórico médico e medicamentos',s:'Histórico médico',r:[1,27]},{t:'Sintomas e condições bucais',s:'Sintomas bucais',r:[28,33]},
+{t:'Histórico pessoal e comportamento',s:'Histórico pessoal',r:[34,47]},{t:'Informações complementares',s:'Complementares',r:[48,49]}];
+const STEPS=[...SEC.map(s=>[s.t,s.s]),['Informações adicionais e declaração','Declaração'],['Para uso interno','Uso interno']];
+const PF=[['nome','Nome completo','text',,'w2'],['nasc','Data de nascimento','date'],['idade','Idade (automática)'],
+['sexo','Sexo','select',['Feminino','Masculino','Outro']],['nat','Naturalidade'],
+['civil','Estado civil','select',['Solteiro(a)','Casado(a)','União estável','Separado(a)','Divorciado(a)','Viúvo(a)']],
+['rg','RG'],['cpf','CPF'],['res','Residência (endereço residencial)',,,'w2'],['telRes','Telefone residencial'],['cepRes','CEP residencial'],
+['com','Endereço comercial',,,'w2'],['telCom','Telefone comercial'],['cepCom','CEP comercial'],['prof','Profissão'],['ind','Indicação (quem indicou)']];
+
+/* ============ UTILITÁRIOS ============ */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const fd=d=>d?d.split('-').reverse().join('/'):'';
+const fdt=ms=>new Date(ms).toLocaleDateString('pt-BR');
+const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const idade=d=>{if(!d)return'';const b=new Date(d+'T00:00'),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n<new Date(n.getFullYear(),b.getMonth(),b.getDate()))a--;return a>=0?a:''};
+const prog=f=>Q.filter(([n,,t])=>t=='ct'?(f.a['q'+n+'_0']||f.a['q'+n+'_1']):f.a['q'+n]).length;
+let tt;const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2200)};
+
+/* ============ INDEXEDDB ============ */
+let db,P=[],F=[],cur=null,step=0,pend=0;
+const openDB=()=>new Promise((res,rej)=>{const r=indexedDB.open('prontulink',1);
+r.onupgradeneeded=()=>{r.result.createObjectStore('pacientes',{keyPath:'id'});r.result.createObjectStore('fichas',{keyPath:'id'}).createIndex('pid','pid')};
+r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const rq=r=>new Promise((res,rej)=>{r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const st=(s,m='readonly')=>db.transaction(s,m).objectStore(s);
+const put=(s,o)=>rq(st(s,'readwrite').put(o)),del=(s,id)=>rq(st(s,'readwrite').delete(id));
+const load=async()=>{P=await rq(st('pacientes').getAll());F=await rq(st('fichas').getAll())};
+
+/* ============ NAVEGAÇÃO ============ */
+async function go(v,id){
+  if(cur&&pend){clearTimeout(pend);pend=0;await saveF()}
+  cur=null;
+  $$('aside button').forEach(b=>b.classList.remove('on'));
+  const n=$('#n-'+(v=='pac'?'list':v));if(n)n.classList.add('on');
+  ({dash:vDash,list:vList,pac:()=>vPac(id),fic:()=>vFicha(id)})[v]();scrollTo(0,0);
+}
+
+/* ============ PAINEL E LISTA ============ */
+function plist(a){
+  if(!a.length)return'<p class="mut">Nenhum paciente encontrado.</p>';
+  return a.map(p=>{const i=idade(p.nasc),n=F.filter(f=>f.pid==p.id).length;
+    return`<div class="item click" onclick="go('pac','${p.id}')"><div><b>${esc(p.nome)}</b><div class="mut">CPF ${esc(p.cpf||'—')}${i!==''?' · '+i+' anos':''}</div></div><span class="mut">${n} ficha${n==1?'':'s'}</span></div>`}).join('');
+}
+function vDash(){
+  const rec=[...P].sort((a,b)=>b.upd-a.upd).slice(0,6);
+  $('#view').innerHTML=`<h1>Painel</h1>
+  <div class="stats"><div class="stat"><b>${P.length}</b>pacientes cadastrados</div><div class="stat"><b>${F.length}</b>fichas de anamnese</div></div>
+  <div class="row"><button class="pri" onclick="go('pac')">+ Novo paciente</button><button onclick="go('list')">Ver lista de pacientes</button></div>
+  <div class="card"><h2>Pacientes recentes</h2>${P.length?plist(rec):'<p class="mut">Nenhum paciente ainda. Comece cadastrando o primeiro.</p>'}</div>`;
+}
+function vList(){
+  $('#view').innerHTML=`<div class="bar"><h1>Pacientes</h1><button class="pri" onclick="go('pac')">+ Novo paciente</button></div>
+  <input class="search" id="busca" placeholder="Pesquisar por nome ou CPF" oninput="filt()"><div class="card" id="lst"></div>`;filt();
+}
+function filt(){
+  const t=norm($('#busca').value),d=t.replace(/\D/g,'');
+  $('#lst').innerHTML=plist(P.filter(p=>!t||norm(p.nome).includes(t)||(d&&(p.cpf||'').replace(/\D/g,'').includes(d))).sort((a,b)=>a.nome.localeCompare(b.nome)));
+}
+
+/* ============ PACIENTE ============ */
+function vPac(id){
+  const p=id?P.find(x=>x.id==id):null;
+  const fs=p?F.filter(f=>f.pid==id).sort((a,b)=>b.cre-a.cre):[];
+  $('#view').innerHTML=`<div class="bar"><h1>${p?esc(p.nome):'Novo paciente'}</h1>${p?`<button class="dan" onclick="delP('${id}')">Excluir paciente</button>`:''}</div>
+  <div class="card"><h2>Identificação</h2><div class="fg">${PF.map(([k,l,t='text',o,c=''])=>`<label class="fl ${c}">${l}`+
+    (t=='select'?`<select data-p="${k}"><option value="">Selecione</option>${o.map(x=>`<option>${x}</option>`).join('')}</select>`:`<input type="${t}" data-p="${k}"${k=='idade'?' readonly':''}>`)+`</label>`).join('')}</div>
+  <div class="row" style="margin-top:16px"><button class="pri" onclick="saveP('${id||''}')">Salvar paciente</button></div></div>
+  ${p?`<div class="card"><div class="bar"><h2>Fichas de anamnese (${fs.length})</h2><button class="pri" onclick="newF('${id}')">+ Nova ficha</button></div>
+  ${fs.length?fs.map(f=>`<div class="item"><div><b>Ficha de ${fdt(f.cre)}</b> <span class="tag ${f.st=='Concluída'?'ok':''}">${f.st}</span><div class="mut">${prog(f)} de 49 respondidas · atualizada em ${fdt(f.upd)}</div></div>
+  <div class="row"><button onclick="go('fic','${f.id}')">Abrir / editar</button><button onclick="printF('${f.id}')">Exportar PDF</button><button class="dan" onclick="delF('${f.id}')">Excluir</button></div></div>`).join(''):'<p class="mut">Nenhuma ficha ainda. Clique em “Nova ficha” para iniciar a anamnese.</p>'}</div>`:''}`;
+  if(p)$$('[data-p]').forEach(e=>e.value=p[e.dataset.p]||'');
+  if(p)$('[data-p=idade]').value=idade(p.nasc);
+}
+async function saveP(id){
+  const o={};$$('[data-p]').forEach(e=>o[e.dataset.p]=e.value.trim());delete o.idade;
+  if(!o.nome){alert('Informe o nome completo do paciente.');return}
+  const old=id?P.find(x=>x.id==id):null;
+  const p={...old,...o,id:id||uid(),cre:old?.cre||Date.now(),upd:Date.now()};
+  await put('pacientes',p);await load();toast('Paciente salvo');go('pac',p.id);
+}
+async function delP(id){
+  const n=F.filter(f=>f.pid==id).length;
+  if(!confirm(`Excluir este paciente e as ${n} ficha(s) vinculadas? Esta ação não pode ser desfeita.`))return;
+  for(const f of F.filter(f=>f.pid==id))await del('fichas',f.id);
+  await del('pacientes',id);await load();toast('Paciente excluído');go('list');
+}
+async function delF(id){
+  if(!confirm('Excluir esta ficha? Esta ação não pode ser desfeita.'))return;
+  const pid=F.find(f=>f.id==id).pid;await del('fichas',id);await load();toast('Ficha excluída');go('pac',pid);
+}
+async function newF(pid){
+  const p=P.find(x=>x.id==pid),f={id:uid(),pid,a:{x_decl:p.nome,x_data:today()},st:'Em andamento',cre:Date.now(),upd:Date.now()};
+  await put('fichas',f);await load();go('fic',f.id);
+}
+
+/* ============ FICHA ============ */
+function qHTML([n,t,ty,fu=[]]){
+  const c=ty=='yn'?`<div class="yn">${['Sim','Não'].map(v=>`<label><input type="radio" name="q${n}" data-k="q${n}" value="${v}">${v}</label>`).join('')}</div>`
+   :ty=='date'?`<input type="date" data-k="q${n}">`:ty=='num'?`<input type="number" min="0" max="20" data-k="q${n}">`
+   :ty=='text'?`<textarea rows="5" data-k="q${n}" placeholder="Observações"></textarea>`:'';
+  const f=fu.length?`<div class="fu" data-for="${n}">${fu.map((l,i)=>`<label class="fl">${l}<input data-k="q${n}_${i}"></label>`).join('')}</div>`:'';
+  return`<div class="q"><div class="qt"><b>${n}.</b> ${t}</div>${c}${f}</div>`;
+}
+function stepHTML(i){
+  if(i<4)return Q.filter(q=>q[0]>=SEC[i].r[0]&&q[0]<=SEC[i].r[1]).map(qHTML).join('');
+  if(i==4)return`<div class="fg"><label class="fl">Nome de seu médico<input data-k="x_med"></label><label class="fl">Endereço do médico<input data-k="x_endmed"></label></div>
+  <label class="fl" style="margin-top:14px">Tem alguma observação a fazer?<textarea rows="4" data-k="x_obs"></textarea></label>
+  <p class="decl">“Declaro-me responsável pela veracidade no preenchimento das informações acima.”</p>
+  <div class="fg"><label class="fl">Nome do paciente<input data-k="x_decl"></label><label class="fl">Assinatura<input class="sig" data-k="x_ass"></label><label class="fl">Data do preenchimento<input type="date" data-k="x_data"></label></div>`;
+  return`<div class="note">Área reservada ao profissional. Estas anotações ficam separadas das respostas do paciente e só entram no PDF se você escolher incluí-las.</div>
+  <textarea rows="12" data-k="x_int" placeholder="Observações do dentista sobre a anamnese e informações relevantes para o atendimento"></textarea>`;
+}
+function vFicha(id){
+  cur=F.find(f=>f.id==id);if(!cur)return go('dash');
+  const p=P.find(x=>x.id==cur.pid);
+  $('#view').innerHTML=`<div class="bar"><div><h1>Anamnese — ${esc(p.nome)}</h1><div class="mut">Ficha de ${fdt(cur.cre)} · <span id="sv">alterações são salvas automaticamente</span></div></div>
+  <div class="row"><button onclick="go('pac','${p.id}')">← Paciente</button><button onclick="printF('${cur.id}')">Exportar PDF</button></div></div>
+  <div class="prog"><div id="pb"></div></div><div class="mut" id="pt"></div>
+  <div class="stepper">${STEPS.map((s,i)=>`<button onclick="show(${i})">${i+1}. ${s[1]}</button>`).join('')}</div>
+  <div class="card">${STEPS.map((s,i)=>`<section class="step"><h2>${s[0]}</h2>${stepHTML(i)}</section>`).join('')}</div>
+  <div class="bar nav"><div class="row"><button id="pv" onclick="show(step-1)">← Anterior</button><button id="nx" class="pri" onclick="show(step+1)">Próxima seção →</button></div>
+  <div class="row"><button onclick="leave()">Salvar e continuar depois</button><button class="pri" onclick="finish()">Concluir ficha</button></div></div>`;
+  $$('[data-k]').forEach(e=>{const v=cur.a[e.dataset.k];if(e.type=='radio')e.checked=e.value===v;else e.value=v||''});
+  sync();show(0);
+}
+function show(i){
+  if(i<0||i>5)return;step=i;
+  $$('.step').forEach((s,j)=>s.hidden=j!=i);$$('.stepper button').forEach((b,j)=>b.classList.toggle('on',j==i));
+  $('#pv').disabled=i==0;$('#nx').disabled=i==5;scrollTo(0,0);
+}
+function sync(){
+  Q.forEach(([n,,t])=>{const f=$(`[data-for="${n}"]`);if(f)f.hidden=t=='yn'&&cur.a['q'+n]!='Sim'});
+  const d=prog(cur);$('#pb').style.width=d/49*100+'%';$('#pt').textContent=`${d} de 49 perguntas respondidas`;
+}
+async function saveF(){
+  if(!cur)return;cur.upd=Date.now();await put('fichas',cur);
+  const s=$('#sv');if(s)s.textContent='salvo às '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+const leave=async()=>{await saveF();toast('Ficha salva');go('pac',cur.pid)};
+const finish=async()=>{
+  const f=prog(cur);if(f<49&&!confirm(`Apenas ${f} de 49 perguntas foram respondidas. Concluir mesmo assim?`))return;
+  cur.st='Concluída';await saveF();toast('Ficha concluída');go('pac',cur.pid);
+};
+
+/* ============ EVENTOS GLOBAIS ============ */
+$('#view').addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.p=='nasc')$('[data-p=idade]').value=idade(t.value);
+  if(t.dataset.p=='cpf'){const d=t.value.replace(/\D/g,'').slice(0,11);t.value=d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2')}
+  if(t.dataset.k&&cur){cur.a[t.dataset.k]=t.value;sync();clearTimeout(pend);pend=setTimeout(()=>{pend=0;saveF()},600)}
+});
+
+/* ============ PDF (impressão) ============ */
+function qa(q,a){
+  const [n,,ty,fu=[]]=q,v=a['q'+n]||'';
+  if(ty=='yn'){let r=`<b>${v||'—'}</b>`;if(v=='Sim')fu.forEach((l,i)=>{const x=a[`q${n}_${i}`];if(x)r+=` · ${l} <i>${esc(x)}</i>`});return r}
+  if(ty=='ct')return fu.map((l,i)=>`${l}: <i>${esc(a[`q${n}_${i}`]||'—')}</i>`).join('<br>');
+  return`<b style="white-space:pre-wrap">${esc(ty=='date'?fd(v):v)||'—'}</b>`;
+}
+function printF(id){
+  const f=F.find(x=>x.id==id),p=P.find(x=>x.id==f.pid),a=f.a;
+  const inc=confirm('Incluir as anotações de “Para uso interno” no PDF?\n\nOK = incluir · Cancelar = não incluir');
+  const ids=PF.map(([k,l,,,c])=>`<div class="${c?'w':''}"><small>${l.replace(' (automática)','')}</small>${esc(k=='idade'?idade(p.nasc):k=='nasc'?fd(p.nasc):p[k])||'&nbsp;'}</div>`).join('');
+  const secs=SEC.map(s=>`<h3>${s.t}</h3>`+Q.filter(q=>q[0]>=s.r[0]&&q[0]<=s.r[1]).map(q=>`<div class="pq"><span>${q[0]}. ${q[1]}</span><span>${qa(q,a)}</span></div>`).join('')).join('');
+  $('#print').innerHTML=`<h1>ProntuLink</h1><h2>Ficha de Anamnese Odontológica</h2><h3>Identificação do paciente</h3><div class="pid">${ids}</div>${secs}
+  <h3>Informações adicionais</h3><div class="pq"><span>Nome de seu médico</span><span><b>${esc(a.x_med)||'—'}</b></span></div><div class="pq"><span>Endereço do médico</span><span><b>${esc(a.x_endmed)||'—'}</b></span></div>
+  <p style="margin:8px 0 3px">Tem alguma observação a fazer?</p><div class="pb">${esc(a.x_obs)}</div>
+  <h3>Declaração do paciente</h3><p><i>Declaro-me responsável pela veracidade no preenchimento das informações acima.</i></p>
+  <div class="sg"><div><em>${esc(a.x_decl)}</em>Nome do paciente</div><div><em style="font-style:italic">${esc(a.x_ass)}</em>Assinatura</div><div style="flex:.5"><em>${fd(a.x_data)}</em>Data</div></div>
+  ${inc?`<h3>Para uso interno</h3><div class="pb" style="min-height:80px">${esc(a.x_int)}</div>`:''}`;
+  const t=document.title;document.title=`Anamnese - ${p.nome}`;window.print();document.title=t;
+}
+
+/* ============ BACKUP JSON ============ */
+function exp(){
+  const b=new Blob([JSON.stringify({app:'ProntuLink',versao:1,exportadoEm:new Date().toISOString(),pacientes:P,fichas:F},null,1)],{type:'application/json'});
+  const l=document.createElement('a');l.href=URL.createObjectURL(b);l.download=`prontulink-backup-${today()}.json`;l.click();URL.revokeObjectURL(l.href);toast('Backup exportado');
+}
+$('#imp').onchange=async e=>{
+  const file=e.target.files[0];e.target.value='';if(!file)return;
+  try{
+    const d=JSON.parse(await file.text());if(!Array.isArray(d.pacientes)||!Array.isArray(d.fichas))throw 0;
+    if(!confirm(`Importar ${d.pacientes.length} paciente(s) e ${d.fichas.length} ficha(s)?\nRegistros com o mesmo identificador serão substituídos.`))return;
+    for(const p of d.pacientes)await put('pacientes',p);for(const f of d.fichas)await put('fichas',f);
+    await load();toast('Importação concluída');go('dash');
+  }catch{alert('Arquivo inválido. Selecione um backup JSON exportado pelo ProntuLink.')}
+};
+
+/* ============ INÍCIO ============ */
+(async()=>{
+  try{db=await openDB();await load();go('dash')}
+  catch{$('#view').innerHTML='<div class="card"><h2>Não foi possível abrir o armazenamento local</h2><p>Abra o arquivo em Chrome, Edge ou Firefox, fora do modo anônimo.</p></div>'}
+})();
+</script>
+</body>
+</html>
